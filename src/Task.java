@@ -2,20 +2,18 @@ public class Task {
     private int id;
     private final String name;
     private final String description;
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
     private TaskStatus status;
 
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
+        this.status = status;
+    }
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
