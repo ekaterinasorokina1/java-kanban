@@ -2,7 +2,8 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
-        TaskManager taskManager = new TaskManager();
+
+        TaskManager taskManager = new Managers().getDefault();
 
         Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW);
         taskManager.createTask(task1);
@@ -51,6 +52,33 @@ public class Main {
 
         taskManager.removeEpicById(epicStart.getId());
         System.out.println("Список подзадач после удаления эпика: " + taskManager.getSubtaskList());
+
+
+        printAllTasks(taskManager);
+    }
+
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getTaskList()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getEpicList()) {
+            System.out.println(epic);
+
+            for (Task task : manager.getEpicSubtaskList(epic.getId())) {
+                System.out.println("--> " + task);
+            }
+        }
+        System.out.println("Подзадачи:");
+        for (Task subtask : manager.getSubtaskList()) {
+            System.out.println(subtask);
+        }
+
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
     }
 }
 
