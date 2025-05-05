@@ -1,7 +1,8 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements  HistoryManager{
-    private final ArrayList<Task> taskHistory = new ArrayList<>(10);
+    private final List<Task> taskHistory = new ArrayList<>(10);
 
     @Override
     public void add(Task task) {
@@ -12,7 +13,7 @@ public class InMemoryHistoryManager implements  HistoryManager{
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         if (taskHistory.isEmpty()) {
             System.out.println("История просмотров пуста");
             return new ArrayList<>();

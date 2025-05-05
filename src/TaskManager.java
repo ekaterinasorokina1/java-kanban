@@ -1,9 +1,9 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
-    ArrayList<Task>getTaskList();
-    ArrayList<Epic> getEpicList();
-    ArrayList<Subtask> getSubtaskList();
+    List<Task> getTaskList();
+    List<Epic> getEpicList();
+    List<Subtask> getSubtaskList();
     // Удаление всех задач
     void removeAllTasks();
 
@@ -39,13 +39,9 @@ public interface TaskManager {
 
     void removeEpicById(int epicId);
 
-    ArrayList<Subtask> getEpicSubtaskList(int epicId);
+    List<Subtask> getEpicSubtaskList(int epicId);
 
-    TaskStatus getEpicStatus(int epicId);
-
-    ArrayList<Task> getHistory();
-
-    void updateHistory(Task task);
+    List<Task> getHistory();
 
     int getTaskCount();
 }

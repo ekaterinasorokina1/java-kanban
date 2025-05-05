@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,13 +25,13 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void shouldBeSize2OfHistory() {
-        ArrayList<Task> history = taskManager.getHistory();
+        List<Task> history = taskManager.getHistory();
         assertEquals(2, history.size());
     }
 
     @Test
     void shouldBeNotEqualsAfterUpdateTask() {
-        ArrayList<Task> history = taskManager.getHistory();
+        List<Task> history = taskManager.getHistory();
         assertNotEquals(history.get(0).getName(), history.get(1).getName(), "После обновления HistoryManager не охраняет предыдущую версию задачи и её данных");
         assertNotEquals(history.get(0).getDescription(), history.get(1).getDescription(),"После обновления HistoryManager не охраняет предыдущую версию задачи и её данных");
         assertNotEquals(history.get(0).getStatus(), history.get(1).getStatus(), "После обновления HistoryManager не охраняет предыдущую версию задачи и её данных");
