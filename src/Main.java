@@ -78,6 +78,7 @@ public class Main {
             System.out.println(task);
         }
     }
+
     private static void getEpicAndPrintHistory(TaskManager manager, int epicId) {
         manager.getEpicById(epicId);
         System.out.println("Получили epic по id: " + epicId);
