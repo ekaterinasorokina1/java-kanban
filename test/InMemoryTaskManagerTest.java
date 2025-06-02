@@ -26,7 +26,7 @@ class InMemoryTaskManagerTest {
     void shouldReturnTaskByIdAndInstanceOfTask() {
         Task task1 = taskManager.getTaskById(1);
         assertEquals(1, task1.getId(), "Не возвращает задачу по id 1");
-        assertInstanceOf(Task.class,task1, "Не возвращае экземпляр класса Task");
+        assertInstanceOf(Task.class, task1, "Не возвращае экземпляр класса Task");
     }
 
     @Test

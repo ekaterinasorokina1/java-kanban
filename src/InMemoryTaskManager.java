@@ -134,7 +134,7 @@ public class InMemoryTaskManager implements TaskManager {
     // Обновление
     @Override
     public void updateTask(Task task) {
-        if(task.getId() > this.taskCount) {
+        if (task.getId() > this.taskCount) {
             this.taskCount = task.getId() + 1;
         }
         tasks.put(task.getId(), task);
@@ -145,7 +145,7 @@ public class InMemoryTaskManager implements TaskManager {
         int subtaskId = subtask.getId();
 
         if (subtaskId > this.taskCount) {
-           this.taskCount = subtaskId + 1;
+            this.taskCount = subtaskId + 1;
         }
         subtasks.put(subtaskId, subtask);
         Epic epic = epics.get(subtask.getEpicId());
@@ -245,7 +245,8 @@ public class InMemoryTaskManager implements TaskManager {
                 case DONE:
                     doneStatusCount++;
                     break;
-                default: progressStatusCount++;
+                default:
+                    progressStatusCount++;
             }
         }
         int subtaskSize = epic.getSubtaskList().size();

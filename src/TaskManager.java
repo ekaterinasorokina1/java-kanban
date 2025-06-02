@@ -2,8 +2,11 @@ import java.util.List;
 
 public interface TaskManager {
     List<Task> getTaskList();
+
     List<Epic> getEpicList();
+
     List<Subtask> getSubtaskList();
+
     // Удаление всех задач
     void removeAllTasks();
 

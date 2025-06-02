@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryHistoryManager implements  HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
     private final Map<Integer, Node<Task>> taskLinkedList = new HashMap<>();
     private Node<Task> tailNode;
 
@@ -31,7 +31,7 @@ public class InMemoryHistoryManager implements  HistoryManager{
             System.out.println("История просмотров пуста");
             return new ArrayList<>();
         } else {
-            return  getTasks();
+            return getTasks();
         }
     }
 
