@@ -1,6 +1,6 @@
 
 public class Node<T> {
-    T item;
+    private T item;
     Node<T> next;
     Node<T> prev;
 
@@ -8,5 +8,13 @@ public class Node<T> {
         this.item = element;
         this.next = next;
         this.prev = prev;
+    }
+
+    public T getItem() {
+        return item;
+    }
+
+    public void setItem(T item) {
+        this.item = item;
     }
 }

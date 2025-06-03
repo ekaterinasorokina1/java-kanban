@@ -21,7 +21,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void remove(int id) {
         if (taskLinkedList.containsKey(id)) {
             removeNode(id);
-            taskLinkedList.remove((id));
         }
     }
 
@@ -35,7 +34,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public Node<Task> linkLast(Task task) {
+    private Node<Task> linkLast(Task task) {
         Node<Task> oldTailNode = tailNode;
         Node<Task> newLastNode = new Node<>(tailNode, task, null);
         tailNode = newLastNode;
@@ -46,7 +45,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return newLastNode;
     }
 
-    public List<Task> getTasks() {
+    private List<Task> getTasks() {
         if (taskLinkedList.isEmpty()) {
             System.out.println("История просмотров пуста");
             return new ArrayList<>();
@@ -56,7 +55,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         Node<Task> taskNode = tailNode;
 
         while (taskNode != null) {
-            taskHistory.add(taskNode.item);
+            taskHistory.add(taskNode.getItem());
             taskNode = taskNode.prev;
         }
         return taskHistory;
@@ -75,5 +74,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (prevNode != null) {
             prevNode.next = nextNode;
         }
+        taskLinkedList.remove((taskId));
     }
 }
