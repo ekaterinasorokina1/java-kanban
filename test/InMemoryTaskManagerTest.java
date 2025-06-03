@@ -1,19 +1,21 @@
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemoryTaskManagerTest {
     static TaskManager taskManager;
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    void beforeEach() {
         taskManager = new Managers().getDefault();
 
         Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW);
         taskManager.createTask(task1);
 
-        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 5 спринта", TaskStatus.NEW);
+        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 6 спринта", TaskStatus.NEW);
         taskManager.createEpic(epicStart);
 
         Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId());
@@ -24,7 +26,7 @@ class InMemoryTaskManagerTest {
     void shouldReturnTaskByIdAndInstanceOfTask() {
         Task task1 = taskManager.getTaskById(1);
         assertEquals(1, task1.getId(), "Не возвращает задачу по id 1");
-        assertInstanceOf(Task.class,task1, "Не возвращае экземпляр класса Task");
+        assertInstanceOf(Task.class, task1, "Не возвращае экземпляр класса Task");
     }
 
     @Test
@@ -65,5 +67,17 @@ class InMemoryTaskManagerTest {
         subtask2.setId(3);
         taskManager.updateSubtask(subtask2);
         assertEquals(subtask1, subtask2, "Не равны id");
+    }
+
+    @Test
+    void shouldNotHaveIdAfterRemoveTask() {
+        taskManager.removeTaskById(1);
+        assertTrue(taskManager.getTaskList().isEmpty(), "Задача не удалилась");
+    }
+
+    @Test
+    void epicShouldNotHasRemovedSubtask() {
+        taskManager.removeSubtaskById(3);
+        assertTrue(taskManager.getEpicSubtaskList(2).isEmpty(), "Подзадача не удалилась из эпика");
     }
 }

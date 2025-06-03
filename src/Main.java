@@ -19,40 +19,29 @@ public class Main {
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Классы", "Написать классы", TaskStatus.NEW, epicStart.getId());
         taskManager.createSubtask(subtask2);
-        Subtask subtask3 = new Subtask("Тестирование", "Написать проверочный код", TaskStatus.NEW, epicEnd.getId());
+        Subtask subtask3 = new Subtask("Тестирование", "Написать проверочный код", TaskStatus.NEW, epicStart.getId());
         taskManager.createSubtask(subtask3);
 
-
-        System.out.println("Список созданных задач: " + taskManager.getTaskList());
-        System.out.println("Список созданных эпиков: " + taskManager.getEpicList());
-        System.out.println("Список созданных подзадач: " + taskManager.getSubtaskList());
-
-
-        Task task3 = new Task("Задачи", "Решить все задачи по спринту", TaskStatus.IN_PROGRESS);
-        task3.setId(task2.getId());
-        taskManager.updateTask(task3);
-        System.out.println("Список задач после обновления: " + taskManager.getTaskList());
-
-        Subtask subtask4 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.DONE, subtask1.getEpicId());
-        subtask4.setId(subtask1.getId());
-        taskManager.updateSubtask(subtask4);
-        System.out.println("Список подзадач в эпике после обновления подзадач: "+  taskManager.getEpicSubtaskList(epicStart.getId()));
-        System.out.println("Статус эпика после обновления подзадачи: " + epicStart.getStatus());
+        getTaskAndPrintHistory(taskManager, task2.getId());
+        getEpicAndPrintHistory(taskManager, epicEnd.getId());
+        getSubtaskAndPrintHistory(taskManager, subtask1.getId());
+        getTaskAndPrintHistory(taskManager, task2.getId());
+        getEpicAndPrintHistory(taskManager, epicStart.getId());
+        getSubtaskAndPrintHistory(taskManager, subtask2.getId());
+        getSubtaskAndPrintHistory(taskManager, subtask1.getId());
+        getSubtaskAndPrintHistory(taskManager, subtask3.getId());
+        getTaskAndPrintHistory(taskManager, task1.getId());
 
         taskManager.removeTaskById(task1.getId());
-        System.out.println("Список задач после удаления одной задачи: " + taskManager.getTaskList());
-
-        taskManager.removeSubtaskById(subtask3.getId());
-        System.out.println("Список подзадач после удаления одной подзадачи: " + taskManager.getSubtaskList());
-        System.out.println("Список подзадач в эпике после удаления одной подзадачи: " + taskManager.getEpicSubtaskList(subtask3.getEpicId()));
-
-        taskManager.removeSubtaskById(subtask4.getId());
-        System.out.println("Статус эпика после обновления подзадачи: " + epicStart.getStatus());
-        System.out.println("Список подзадач в эпике после удаления одной подзадачи: " + taskManager.getEpicSubtaskList(subtask4.getEpicId()));
-
+        System.out.println("История после удаления задачи с id 1:");
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task);
+        }
         taskManager.removeEpicById(epicStart.getId());
-        System.out.println("Список подзадач после удаления эпика: " + taskManager.getSubtaskList());
-
+        System.out.println("История после удаления epic (id 3) с 3 subtask id(7,5,6):");
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task);
+        }
 
         printAllTasks(taskManager);
     }
@@ -80,5 +69,33 @@ public class Main {
             System.out.println(task);
         }
     }
+
+    private static void getTaskAndPrintHistory(TaskManager manager, int taskId) {
+        manager.getTaskById(taskId);
+        System.out.println("Получили задачу по id: " + taskId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+    }
+
+    private static void getEpicAndPrintHistory(TaskManager manager, int epicId) {
+        manager.getEpicById(epicId);
+        System.out.println("Получили epic по id: " + epicId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+    }
+
+    private static void getSubtaskAndPrintHistory(TaskManager manager, int subtaskId) {
+        manager.getSubtaskById(subtaskId);
+        System.out.println("Получили subtaskId по id: " + subtaskId);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+    }
+
 }
 

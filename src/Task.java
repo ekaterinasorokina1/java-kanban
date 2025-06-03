@@ -9,6 +9,7 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+
     public TaskStatus getStatus() {
         return status;
     }
@@ -20,7 +21,7 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (o == null) {
-            return  false;
+            return false;
         }
         Task task = (Task) o;
         return id == task.id;
@@ -41,6 +42,7 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
     public int getId() {
         return id;
     }
