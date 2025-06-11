@@ -7,7 +7,6 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
     private File file;
-    private boolean isLoading;
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -86,9 +85,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private void save() {
-        if (isLoading) {
-            return;
-        }
         try {
             if (!file.exists()) {
                 throw new ManagerSaveException("Файла не существует");
@@ -107,7 +103,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
             Files.writeString(Paths.get(file.toString()), String.join(",\n", listOfTaskString));
         } catch (IOException exception) {
-            System.out.println("Произошла ошибка");
+            System.out.println("Произошла ошибка " + exception.getMessage());
         }
     }
 
@@ -140,14 +136,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 
-    static FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) {
         try {
             FileBackedTaskManager fileManager = new FileBackedTaskManager(file);
 
             if (file.isFile()) {
-                fileManager.setLoading(true);
                 fileManager.loadTasksFromFile();
-                fileManager.setLoading(false);
             }
 
             return fileManager;
@@ -155,10 +149,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             System.out.println("Произошла ошибка" + exception.getMessage());
             return null;
         }
-    }
-
-    public void setLoading(boolean loading) {
-        isLoading = loading;
     }
 
     public File getFile() {
