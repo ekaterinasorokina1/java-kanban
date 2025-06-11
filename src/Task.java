@@ -3,11 +3,13 @@ public class Task {
     private final String name;
     private final String description;
     private TaskStatus status;
+    private final TaskType type;
 
-    public Task(String name, String description, TaskStatus status) {
+    public Task(String name, String description, TaskStatus status, TaskType type) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = type;
     }
 
     public TaskStatus getStatus() {
@@ -35,12 +37,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+        String[] taskData = new String[]{id + "", type.toString(), name, status.toString(), description};
+        return String.join(",", taskData);
     }
 
     public int getId() {
@@ -57,5 +55,9 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public TaskType getType() {
+        return type;
     }
 }

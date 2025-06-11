@@ -2,6 +2,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,15 +13,20 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     void beforeEach() {
-        taskManager = new Managers().getDefault();
+        try {
+            File temp = File.createTempFile("temp", ".csv");
+            taskManager = FileBackedTaskManager.loadFromFile(temp);
+        } catch (IOException exception) {
+            System.out.println("Произошла ошибка" + exception.getMessage());
+        }
 
-        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW);
+        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK);
         taskManager.createTask(task1);
 
-        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 6 спринта", TaskStatus.NEW);
+        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 6 спринта", TaskStatus.NEW, TaskType.EPIC);
         taskManager.createEpic(epicStart);
 
-        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId());
+        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK);
         taskManager.createSubtask(subtask1);
     }
 
@@ -46,7 +54,7 @@ class InMemoryTaskManagerTest {
     @Test
     void shouldNotSetIdMoreTaskCount() {
         Task task1 = taskManager.getTaskById(1);
-        Task task3 = new Task(task1.getName(), task1.getDescription(), TaskStatus.DONE);
+        Task task3 = new Task(task1.getName(), task1.getDescription(), TaskStatus.DONE, TaskType.TASK);
         task3.setId(10);
         taskManager.updateTask(task3);
         assertEquals(11, taskManager.getTaskCount(), "При обновлении счетчик не увеличился, что приводит к конфликтам");
@@ -63,7 +71,7 @@ class InMemoryTaskManagerTest {
     @Test
     void shouldBeIdEqualsWhenUpdateSubtask() {
         Subtask subtask1 = taskManager.getSubtaskById(3);
-        Subtask subtask2 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.IN_PROGRESS, subtask1.getEpicId());
+        Subtask subtask2 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.IN_PROGRESS, subtask1.getEpicId(), TaskType.SUBTASK);
         subtask2.setId(3);
         taskManager.updateSubtask(subtask2);
         assertEquals(subtask1, subtask2, "Не равны id");
