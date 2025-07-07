@@ -1,15 +1,23 @@
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Task {
     private int id;
     private final String name;
     private final String description;
     private TaskStatus status;
     private final TaskType type;
+    private int duration;
+    private LocalDateTime startTime;
 
-    public Task(String name, String description, TaskStatus status, TaskType type) {
+    public Task(String name, String description, TaskStatus status, TaskType type, int duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.type = type;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public TaskStatus getStatus() {
@@ -37,7 +45,7 @@ public class Task {
 
     @Override
     public String toString() {
-        String[] taskData = new String[]{id + "", type.toString(), name, status.toString(), description};
+        String[] taskData = new String[]{id + "", type.toString(), name, status.toString(), description, duration + "", startTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))};
         return String.join(",", taskData);
     }
 
@@ -59,5 +67,25 @@ public class Task {
 
     public TaskType getType() {
         return type;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(Duration.ofMinutes(duration));
     }
 }
