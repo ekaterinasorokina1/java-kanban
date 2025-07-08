@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -114,18 +115,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private Task fromString(String value) {
         String[] taskData = value.split(",");
         if (taskData[1].equals("SUBTASK")) {
-            Subtask subtask = new Subtask(taskData[2], taskData[4], TaskStatus.valueOf(taskData[3]), Integer.parseInt(taskData[7]), TaskType.SUBTASK, Integer.parseInt(taskData[5]), LocalDateTime.parse(taskData[6], formatter));
+            Subtask subtask = new Subtask(taskData[2], taskData[4], TaskStatus.valueOf(taskData[3]), Integer.parseInt(taskData[7]), TaskType.SUBTASK, Duration.ofMinutes(Integer.parseInt(taskData[5])), LocalDateTime.parse(taskData[6], formatter));
             subtask.setId(Integer.parseInt(taskData[0]));
             updateSubtask(subtask);
             return subtask;
         }
         if (taskData[1].equals("EPIC")) {
-            Epic epic = new Epic(taskData[2], taskData[4], TaskStatus.valueOf(taskData[3]), TaskType.EPIC, Integer.parseInt(taskData[5]), LocalDateTime.parse(taskData[6], formatter));
+            Epic epic = new Epic(taskData[2], taskData[4], TaskStatus.valueOf(taskData[3]), TaskType.EPIC, Duration.ofMinutes(Integer.parseInt(taskData[5])), LocalDateTime.parse(taskData[6], formatter));
             epic.setId(Integer.parseInt(taskData[0]));
             updateEpic(epic);
             return epic;
         } else {
-            Task task = new Task(taskData[2], taskData[4], TaskStatus.valueOf(taskData[3]), TaskType.valueOf(taskData[1]), Integer.parseInt(taskData[5]), LocalDateTime.parse(taskData[6], formatter));
+            Task task = new Task(taskData[2], taskData[4], TaskStatus.valueOf(taskData[3]), TaskType.valueOf(taskData[1]), Duration.ofMinutes(Integer.parseInt(taskData[5])), LocalDateTime.parse(taskData[6], formatter));
             task.setId(Integer.parseInt(taskData[0]));
             updateTask(task);
             return task;
@@ -160,15 +161,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, 30, LocalDateTime.of(2025, 6, 19, 0, 0));
+        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 0, 0));
         taskManager.createTask(task1);
-        Task task2 = new Task("Задачи", "Решить все задачи по спринту", TaskStatus.NEW, TaskType.TASK, 50, LocalDateTime.of(2025, 6, 19, 15, 0));
+        Task task2 = new Task("Задачи", "Решить все задачи по спринту", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(50), LocalDateTime.of(2025, 6, 19, 15, 0));
         taskManager.createTask(task2);
-        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 4 спринта", TaskStatus.NEW, TaskType.EPIC, 90, LocalDateTime.of(2025, 6, 19, 7, 0));
+        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 4 спринта", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(90), LocalDateTime.of(2025, 6, 19, 7, 0));
         taskManager.createEpic(epicStart);
-        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, 90, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, Duration.ofMinutes(90), LocalDateTime.of(2025, 6, 19, 10, 0));
         taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("ТЗ2", "Проверить дату эпика", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, 90, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Subtask subtask2 = new Subtask("ТЗ2", "Проверить дату эпика", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, Duration.ofMinutes(90), LocalDateTime.of(2025, 6, 19, 12, 0));
         taskManager.createSubtask(subtask2);
 
         System.out.println(taskManager.getTaskList());

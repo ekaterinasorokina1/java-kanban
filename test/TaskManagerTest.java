@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,13 +21,13 @@ abstract class TaskManagerTest<T extends TaskManager> {
             System.out.println("Произошла ошибка" + exception.getMessage());
         }
 
-        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, 30, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         taskManager.createTask(task1);
 
-        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 6 спринта", TaskStatus.NEW, TaskType.EPIC, 50, LocalDateTime.of(2025, 6, 19, 2, 0));
+        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 6 спринта", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(50), LocalDateTime.of(2025, 6, 19, 2, 0));
         taskManager.createEpic(epicStart);
 
-        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, 40, LocalDateTime.of(2025, 6, 19, 14, 0));
+        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, Duration.ofMinutes(40), LocalDateTime.of(2025, 6, 19, 14, 0));
         taskManager.createSubtask(subtask1);
     }
 
@@ -54,7 +55,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldNotSetIdMoreTaskCount() {
         Task task1 = taskManager.getTaskById(1);
-        Task task3 = new Task(task1.getName(), task1.getDescription(), TaskStatus.DONE, TaskType.TASK, 25, LocalDateTime.of(2025, 6, 19, 17, 30));
+        Task task3 = new Task(task1.getName(), task1.getDescription(), TaskStatus.DONE, TaskType.TASK, Duration.ofMinutes(25), LocalDateTime.of(2025, 6, 19, 17, 30));
         task3.setId(10);
         taskManager.updateTask(task3);
         assertEquals(11, taskManager.getTaskCount(), "При обновлении счетчик не увеличился, что приводит к конфликтам");
@@ -71,7 +72,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldBeIdEqualsWhenUpdateSubtask() {
         Subtask subtask1 = taskManager.getSubtaskById(3);
-        Subtask subtask2 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.IN_PROGRESS, subtask1.getEpicId(), TaskType.SUBTASK, 45, LocalDateTime.of(2025, 6, 19, 19, 0));
+        Subtask subtask2 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.IN_PROGRESS, subtask1.getEpicId(), TaskType.SUBTASK, Duration.ofMinutes(45), LocalDateTime.of(2025, 6, 19, 19, 0));
         subtask2.setId(3);
         taskManager.updateSubtask(subtask2);
         assertEquals(subtask1, subtask2, "Не равны id");
@@ -91,19 +92,19 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void shouldNotTaskToBeIntersected() {
-        Subtask subtask = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, 2, TaskType.SUBTASK, 40, LocalDateTime.of(2025, 6, 19, 18, 0));
+        Subtask subtask = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, 2, TaskType.SUBTASK, Duration.ofMinutes(40), LocalDateTime.of(2025, 6, 19, 18, 0));
         assertFalse(taskManager.isTaskIntersected(subtask), "Задача не должна пересекаться, она на несколько часов позже остальных");
     }
 
     @Test
     void shouldTaskToBeIntersectedWithStartTime() {
-        Subtask subtask = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, 2, TaskType.SUBTASK, 50, LocalDateTime.of(2025, 6, 19, 13, 30));
+        Subtask subtask = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, 2, TaskType.SUBTASK, Duration.ofMinutes(50), LocalDateTime.of(2025, 6, 19, 13, 30));
         assertTrue(taskManager.isTaskIntersected(subtask), "Задача должна пересекаться, тк через 30 минут будет другая");
     }
 
     @Test
     void shouldTaskToBeIntersected() {
-        Subtask subtask = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, 2, TaskType.SUBTASK, 40, LocalDateTime.of(2025, 6, 19, 14, 30));
+        Subtask subtask = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, 2, TaskType.SUBTASK, Duration.ofMinutes(40), LocalDateTime.of(2025, 6, 19, 14, 30));
         assertTrue(taskManager.isTaskIntersected(subtask), "Задача должна пересекаться с задачей старта 2025.06.19.14:00 с продолжительностью 40 мин");
     }
 }

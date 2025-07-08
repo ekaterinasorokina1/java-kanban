@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,11 +21,11 @@ class InMemoryHistoryManagerTest extends TaskManagerTest {
         } catch (IOException exception) {
             System.out.println("Произошла ошибка" + exception.getMessage());
         }
-        Task task2 = new Task("Тест", "Проверить, что последняя задача, которую посмотрели, идет первой в списке", TaskStatus.NEW, TaskType.TASK, 20, LocalDateTime.of(2025, 6, 19, 9, 0));
+        Task task2 = new Task("Тест", "Проверить, что последняя задача, которую посмотрели, идет первой в списке", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 6, 19, 9, 0));
         taskManager.createTask(task2);
         taskManager.getTaskById(task2.getId());
 
-        Task newTask = new Task("Задачи", "Проверить, что при удалении задачи, история очищается", TaskStatus.IN_PROGRESS, TaskType.TASK, 35, LocalDateTime.of(2025, 6, 19, 15, 0));
+        Task newTask = new Task("Задачи", "Проверить, что при удалении задачи, история очищается", TaskStatus.IN_PROGRESS, TaskType.TASK, Duration.ofMinutes(35), LocalDateTime.of(2025, 6, 19, 15, 0));
         newTask.setId(1);
         taskManager.updateTask(newTask);
         taskManager.getTaskById(1);
@@ -53,7 +54,7 @@ class InMemoryHistoryManagerTest extends TaskManagerTest {
 
     @Test
     void taskById2ShouldBeFirstAfterDelete() {
-        Task task = new Task("Тест", "Проверить, что последняя задача будет эта после удадления первой", TaskStatus.NEW, TaskType.TASK, 20, LocalDateTime.of(2025, 5, 19, 9, 0));
+        Task task = new Task("Тест", "Проверить, что последняя задача будет эта после удадления первой", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 5, 19, 9, 0));
         taskManager.createTask(task);
         taskManager.getTaskById(task.getId());
         taskManager.getTaskById(1);
@@ -65,7 +66,7 @@ class InMemoryHistoryManagerTest extends TaskManagerTest {
 
     @Test
     void shouldNotHaveTaskAfterDelete() {
-        Task task = new Task("Тест", "Проверить, что последняя задача будет эта после удадления первой", TaskStatus.NEW, TaskType.TASK, 20, LocalDateTime.of(2025, 5, 19, 9, 0));
+        Task task = new Task("Тест", "Проверить, что последняя задача будет эта после удадления первой", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 5, 19, 9, 0));
         taskManager.createTask(task);
         taskManager.getTaskById(task.getId());
         taskManager.getTaskById(1);

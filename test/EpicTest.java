@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,9 +25,9 @@ class EpicTest {
 
     @Test
     void shouldBeEquals0WhenAddEpicToEpicSubtaskList() {
-        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, 0, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(0), LocalDateTime.of(2025, 6, 19, 10, 0));
         epic.setId(1);
-        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         subtask.setId(2);
         epic.addSubtask(epic.getId());
         assertEquals(0, epic.getSubtaskList().size(), "Объект Epic получилось добавить в самого себя в виде подзадачи");
@@ -34,11 +35,11 @@ class EpicTest {
 
     @Test
     void shouldBeEqualsNewStatusToEpic() {
-        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, 0, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(0), LocalDateTime.of(2025, 6, 19, 10, 0));
         epic.setId(1);
-        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         subtask.setId(2);
-        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 10, 12, 0));
+        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 10, 12, 0));
         subtask.setId(3);
         taskManager.createEpic(epic);
         taskManager.createSubtask(subtask);
@@ -48,11 +49,11 @@ class EpicTest {
 
     @Test
     void shouldBeEqualsDoneStatusToEpic() {
-        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, 0, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(0), LocalDateTime.of(2025, 6, 19, 10, 0));
         epic.setId(1);
-        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.DONE, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.DONE, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         subtask.setId(2);
-        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.DONE, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 10, 12, 0));
+        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.DONE, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 10, 12, 0));
         subtask.setId(3);
         taskManager.createEpic(epic);
         taskManager.createSubtask(subtask);
@@ -62,11 +63,11 @@ class EpicTest {
 
     @Test
     void shouldBeEqualsInProgressStatusToEpic() {
-        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, 0, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(0), LocalDateTime.of(2025, 6, 19, 10, 0));
         epic.setId(1);
-        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.IN_PROGRESS, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.IN_PROGRESS, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         subtask.setId(2);
-        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.IN_PROGRESS, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 10, 12, 0));
+        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.IN_PROGRESS, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 10, 12, 0));
         subtask.setId(3);
         taskManager.createEpic(epic);
         taskManager.createSubtask(subtask);
@@ -76,11 +77,11 @@ class EpicTest {
 
     @Test
     void shouldBeEqualsInProgressStatusToEpicWhenHasDoneAndNewStatuses() {
-        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, 0, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(0), LocalDateTime.of(2025, 6, 19, 10, 0));
         epic.setId(1);
-        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         subtask.setId(2);
-        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.DONE, epic.getId(), TaskType.SUBTASK, 30, LocalDateTime.of(2025, 6, 10, 12, 0));
+        Subtask subtask2 = new Subtask("subtask2", "descrip3", TaskStatus.DONE, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 10, 12, 0));
         subtask.setId(3);
         taskManager.createEpic(epic);
         taskManager.createSubtask(subtask);
@@ -90,9 +91,9 @@ class EpicTest {
 
     @Test
     void epicShouldHaveSubtask() {
-        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, 0, LocalDateTime.of(2025, 6, 19, 12, 0));
+        Epic epic = new Epic("epic", "descrip1", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(0), LocalDateTime.of(2025, 6, 19, 12, 0));
         epic.setId(1);
-        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, 1, TaskType.SUBTASK, 50, LocalDateTime.of(2025, 6, 19, 10, 0));
+        Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, 1, TaskType.SUBTASK, Duration.ofMinutes(50), LocalDateTime.of(2025, 6, 19, 10, 0));
         subtask.setId(2);
         taskManager.createEpic(epic);
         taskManager.createSubtask(subtask);

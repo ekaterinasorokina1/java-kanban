@@ -8,10 +8,10 @@ public class Task {
     private final String description;
     private TaskStatus status;
     private final TaskType type;
-    private int duration;
+    private Duration duration;
     private LocalDateTime startTime;
 
-    public Task(String name, String description, TaskStatus status, TaskType type, int duration, LocalDateTime startTime) {
+    public Task(String name, String description, TaskStatus status, TaskType type, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -45,7 +45,7 @@ public class Task {
 
     @Override
     public String toString() {
-        String[] taskData = new String[]{id + "", type.toString(), name, status.toString(), description, duration + "", startTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))};
+        String[] taskData = new String[]{id + "", type.toString(), name, status.toString(), description, duration.toMinutes() + "", startTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))};
         return String.join(",", taskData);
     }
 
@@ -69,11 +69,11 @@ public class Task {
         return type;
     }
 
-    public int getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
@@ -86,6 +86,6 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plus(Duration.ofMinutes(duration));
+        return startTime.plus(duration);
     }
 }

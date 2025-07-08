@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,9 +21,9 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
             File temp = File.createTempFile("temp", ".csv");
             taskManager = FileBackedTaskManager.loadFromFile(temp);
 
-            Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, 50, LocalDateTime.of(2025, 6, 19, 12, 0));
+            Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(50), LocalDateTime.of(2025, 6, 19, 12, 0));
             taskManager.createTask(task1);
-            Task task2 = new Task("Задачи", "Решить все задачи по спринту", TaskStatus.NEW, TaskType.TASK, 40, LocalDateTime.of(2025, 6, 19, 10, 0));
+            Task task2 = new Task("Задачи", "Решить все задачи по спринту", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(40), LocalDateTime.of(2025, 6, 19, 10, 0));
             taskManager.createTask(task2);
         } catch (IOException exception) {
             System.out.println("Произошла ошибка" + exception.getMessage());
