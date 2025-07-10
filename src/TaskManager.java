@@ -47,4 +47,6 @@ public interface TaskManager {
     List<Task> getHistory();
 
     int getTaskCount();
+
+    List<Task> getPrioritizedTasks();
 }
