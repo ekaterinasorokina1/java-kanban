@@ -22,16 +22,16 @@ public interface TaskManager {
     Epic getEpicById(int epicId);
 
     // Создание
-    void createTask(Task task);
+    boolean createTask(Task task);
 
     void createEpic(Epic epic);
 
-    void createSubtask(Subtask subtask);
+    boolean createSubtask(Subtask subtask);
 
     // Обновление
-    void updateTask(Task task);
+    boolean updateTask(Task task);
 
-    void updateSubtask(Subtask subtask);
+    boolean updateSubtask(Subtask subtask);
 
     void updateEpic(Epic epic);
 

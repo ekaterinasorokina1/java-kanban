@@ -4,10 +4,10 @@ import java.time.format.DateTimeFormatter;
 
 public class Task {
     private int id;
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private TaskStatus status;
-    private final TaskType type;
+    private TaskType type;
     private Duration duration;
     private LocalDateTime startTime;
 
