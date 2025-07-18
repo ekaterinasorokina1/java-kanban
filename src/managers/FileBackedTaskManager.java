@@ -1,3 +1,7 @@
+package managers;
+
+import tasks.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,9 +22,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void createTask(Task task) {
-        super.createTask(task);
+    public boolean createTask(Task task) {
+        boolean isTaskIntersected = super.createTask(task);
         save();
+        return isTaskIntersected;
     }
 
     @Override
@@ -30,9 +35,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
-        super.createSubtask(subtask);
+    public boolean createSubtask(Subtask subtask) {
+        boolean isTaskIntersected = super.createSubtask(subtask);
         save();
+        return isTaskIntersected;
     }
 
     @Override
@@ -54,15 +60,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void updateTask(Task task) {
-        super.updateTask(task);
+    public boolean updateTask(Task task) {
+        boolean isTaskIntersected = super.updateTask(task);
         save();
+        return isTaskIntersected;
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) {
-        super.updateSubtask(subtask);
+    public boolean updateSubtask(Subtask subtask) {
+        boolean isTaskIntersected = super.updateSubtask(subtask);
         save();
+        return isTaskIntersected;
     }
 
     @Override
@@ -158,23 +166,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         return file;
     }
 
-    public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task("Теория", "Изучить теорию спринта", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 0, 0));
-        taskManager.createTask(task1);
-        Task task2 = new Task("Задачи", "Решить все задачи по спринту", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(50), LocalDateTime.of(2025, 6, 19, 15, 0));
-        taskManager.createTask(task2);
-        Epic epicStart = new Epic("Тестовое задание", "Нужно решить тесторовое задание 4 спринта", TaskStatus.NEW, TaskType.EPIC, Duration.ofMinutes(90), LocalDateTime.of(2025, 6, 19, 7, 0));
-        taskManager.createEpic(epicStart);
-        Subtask subtask1 = new Subtask("ТЗ", "Отзнакомиться с ТЗ", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, Duration.ofMinutes(90), LocalDateTime.of(2025, 6, 19, 10, 0));
-        taskManager.createSubtask(subtask1);
-        Subtask subtask2 = new Subtask("ТЗ2", "Проверить дату эпика", TaskStatus.NEW, epicStart.getId(), TaskType.SUBTASK, Duration.ofMinutes(90), LocalDateTime.of(2025, 6, 19, 12, 0));
-        taskManager.createSubtask(subtask2);
-
-        System.out.println(taskManager.getTaskList());
-        System.out.println(taskManager.getEpicList());
-        System.out.println(taskManager.getSubtaskList());
-        System.out.println(taskManager.getPrioritizedTasks());
-    }
 }

@@ -1,3 +1,7 @@
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.TaskStatus;
+import tasks.TaskType;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

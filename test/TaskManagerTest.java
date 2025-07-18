@@ -1,3 +1,6 @@
+import tasks.*;
+import managers.FileBackedTaskManager;
+import managers.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,21 +38,21 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldReturnTaskByIdAndInstanceOfTask() {
         Task task1 = taskManager.getTaskById(1);
         assertEquals(1, task1.getId(), "Не возвращает задачу по id 1");
-        assertInstanceOf(Task.class, task1, "Не возвращае экземпляр класса Task");
+        assertInstanceOf(Task.class, task1, "Не возвращае экземпляр класса Tasks.tasks.Task");
     }
 
     @Test
     void shouldReturnEpicByIdAndInstanceOfEpic() {
         Epic epicStart = taskManager.getEpicById(2);
         assertEquals(2, epicStart.getId(), "Не возвращает epic по id 2");
-        assertInstanceOf(Epic.class, epicStart, "Не возвращае экземпляр класса Epic");
+        assertInstanceOf(Epic.class, epicStart, "Не возвращае экземпляр класса Tasks.Epic");
     }
 
     @Test
     void shouldReturnSubtaskByIdAndInstanceOfSubtask() {
         Subtask subtask = taskManager.getSubtaskById(3);
         assertEquals(3, subtask.getId(), "Не возвращает subtask по id 3");
-        assertInstanceOf(Subtask.class, subtask, "Не возвращае экземпляр класса Subtask");
+        assertInstanceOf(Subtask.class, subtask, "Не возвращае экземпляр класса Tasks.Subtask");
     }
 
     @Test

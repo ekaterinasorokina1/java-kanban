@@ -1,3 +1,10 @@
+package managers;
+
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+import tasks.TaskStatus;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -78,7 +85,6 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtask != null) {
             updateHistory(subtask);
         }
-        updateHistory(subtask);
         return subtask;
     }
 
@@ -93,13 +99,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     // Создание
     @Override
-    public void createTask(Task task) {
+    public boolean createTask(Task task) {
         task.setId(taskCount);
         tasks.put(taskCount, task);
         taskCount++;
+
         if (task.getDuration().toMinutes() != 0 && !isTaskIntersected(task)) {
             prioritizedTasks.add(task);
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -111,7 +120,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
+    public boolean createSubtask(Subtask subtask) {
         subtask.setId(taskCount);
         subtasks.put(taskCount, subtask);
         taskCount++;
@@ -121,12 +130,14 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicTime(epic.getId());
         if (subtask.getDuration().toMinutes() != 0 && !isTaskIntersected(subtask)) {
             prioritizedTasks.add(subtask);
+            return false;
         }
+        return true;
     }
 
     // Обновление
     @Override
-    public void updateTask(Task task) {
+    public boolean updateTask(Task task) {
         if (task.getId() > this.taskCount) {
             this.taskCount = task.getId() + 1;
         }
@@ -135,11 +146,13 @@ public class InMemoryTaskManager implements TaskManager {
         prioritizedTasks.remove(task);
         if (task.getDuration().toMinutes() != 0 && !isTaskIntersected(task)) {
             prioritizedTasks.add(task);
+            return false;
         }
+        return true;
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) {
+    public boolean updateSubtask(Subtask subtask) {
         int subtaskId = subtask.getId();
 
         if (subtaskId > this.taskCount) {
@@ -154,7 +167,9 @@ public class InMemoryTaskManager implements TaskManager {
         prioritizedTasks.remove(subtask);
         if (subtask.getDuration().toMinutes() != 0 && !isTaskIntersected(subtask)) {
             prioritizedTasks.add(subtask);
+            return false;
         }
+        return true;
     }
 
     @Override

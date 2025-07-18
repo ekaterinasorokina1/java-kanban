@@ -1,3 +1,8 @@
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.TaskStatus;
+import tasks.TaskType;
+import managers.FileBackedTaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +35,7 @@ class EpicTest {
         Subtask subtask = new Subtask("subtask", "descrip2", TaskStatus.NEW, epic.getId(), TaskType.SUBTASK, Duration.ofMinutes(30), LocalDateTime.of(2025, 6, 19, 12, 0));
         subtask.setId(2);
         epic.addSubtask(epic.getId());
-        assertEquals(0, epic.getSubtaskList().size(), "Объект Epic получилось добавить в самого себя в виде подзадачи");
+        assertEquals(0, epic.getSubtaskList().size(), "Объект Tasks.Epic получилось добавить в самого себя в виде подзадачи");
     }
 
     @Test
