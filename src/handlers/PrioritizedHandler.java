@@ -1,25 +1,23 @@
+package handlers;
+
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
+import managers.TaskManager;
+import tasks.Task;
+
+
 public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
-    TaskManager taskManager;
-    Gson gson;
+    private TaskManager taskManager;
+    private Gson gson;
 
-    public PrioritizedHandler(TaskManager taskManager) {
+    public PrioritizedHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        this.gson = gson;
     }
 
     @Override

@@ -1,9 +1,16 @@
+import tasks.Task;
+import tasks.TaskStatus;
+import tasks.TaskType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import managers.InMemoryTaskManager;
+import managers.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.DurationAdapter;
+import utils.LocalDateTimeAdapter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,7 +75,7 @@ public class HttpTaskHandlerTest {
 
     @Test
     public void testAddTask() throws IOException, InterruptedException {
-        Task task1 = new Task("task1", "descrip1", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.now());
+        tasks.Task task1 = new tasks.Task("task1", "descrip1", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.now());
         String stringTask = gson.toJson(task1);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -82,32 +89,10 @@ public class HttpTaskHandlerTest {
 
         assertEquals(201, response.statusCode());
 
-        List<Task> tasksFromManager = taskManager.getTaskList();
+        List<tasks.Task> tasksFromManager = taskManager.getTaskList();
         assertNotNull(tasksFromManager, "Задачи не возвращаются");
         assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
         assertEquals("task1", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
-    }
-
-    @Test
-    public void testGetTaskById() throws IOException, InterruptedException {
-        Task task1 = new Task("task1", "descrip1", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 6, 19, 8, 0));
-        taskManager.createTask(task1);
-
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/1");
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(url)
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        assertEquals(200, response.statusCode());
-
-        Task task = gson.fromJson(response.body(), Task.class);
-
-        assertNotNull(task, "Задача не возвращается");
-        assertEquals("task1", task.getName(), "Некорректное имя задачи");
     }
 
     @Test
@@ -123,14 +108,36 @@ public class HttpTaskHandlerTest {
 
         assertEquals(404, response.statusCode());
 
-        Task task = gson.fromJson(response.body(), Task.class);
+        tasks.Task task = gson.fromJson(response.body(), tasks.Task.class);
 
         assertNull(task, "Задача не должна возвращается");
     }
 
     @Test
+    public void testGetTaskById() throws IOException, InterruptedException {
+        tasks.Task task1 = new tasks.Task("task1", "descrip1", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 6, 19, 8, 0));
+        taskManager.createTask(task1);
+
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/1");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(200, response.statusCode());
+
+        tasks.Task task = gson.fromJson(response.body(), tasks.Task.class);
+
+        assertNotNull(task, "Задача не возвращается");
+        assertEquals("task1", task.getName(), "Некорректное имя задачи");
+    }
+
+    @Test
     public void testDeleteTask() throws IOException, InterruptedException {
-        Task task1 = new Task("task1", "descrip1", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 6, 19, 8, 0));
+        tasks.Task task1 = new tasks.Task("task1", "descrip1", TaskStatus.NEW, TaskType.TASK, Duration.ofMinutes(20), LocalDateTime.of(2025, 6, 19, 8, 0));
         taskManager.createTask(task1);
 
         HttpClient client = HttpClient.newHttpClient();
@@ -144,7 +151,7 @@ public class HttpTaskHandlerTest {
 
         assertEquals(200, response.statusCode());
 
-        Task task = taskManager.getTaskById(1);
+        tasks.Task task = taskManager.getTaskById(1);
         assertNull(task, "Задача не удалилась");
     }
 }

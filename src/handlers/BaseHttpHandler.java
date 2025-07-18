@@ -1,3 +1,5 @@
+package handlers;
+
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -16,22 +18,23 @@ public class BaseHttpHandler {
     }
 
     protected void sendNotFound(HttpExchange h) throws IOException {
-        h.sendResponseHeaders(404, 0);
-        h.close();
+        makeResponse(h, 404);
     }
 
     protected void sendHasInteractions(HttpExchange h) throws IOException {
-        h.sendResponseHeaders(406, 0);
-        h.close();
+        makeResponse(h, 406);
     }
 
     protected void sendHasErrors(HttpExchange h) throws IOException {
-        h.sendResponseHeaders(500, 0);
-        h.close();
+        makeResponse(h, 500);
     }
 
     protected void sendSuccess(HttpExchange h) throws IOException {
-        h.sendResponseHeaders(201, 0);
+        makeResponse(h, 201);
+    }
+
+    private void makeResponse(HttpExchange h, int code) throws IOException {
+        h.sendResponseHeaders(code, 0);
         h.close();
     }
 }

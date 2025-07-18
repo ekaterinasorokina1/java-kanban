@@ -1,3 +1,5 @@
+package handlers;
+
 import com.google.gson.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -6,25 +8,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
+
+import managers.TaskManager;
+import tasks.Task;
 
 public class TasksHandler extends BaseHttpHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    Gson gson;
+    private Gson gson;
+    private TaskManager taskManager;
 
-    TaskManager taskManager;
-
-    public TasksHandler(TaskManager taskManager) {
+    public TasksHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        this.gson = gson;
     }
 
     @Override

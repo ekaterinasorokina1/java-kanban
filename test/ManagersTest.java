@@ -1,3 +1,7 @@
+import managers.FileBackedTaskManager;
+import managers.HistoryManager;
+import managers.Managers;
+import managers.TaskManager;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +14,7 @@ class ManagersTest {
         try {
             File temp = File.createTempFile("temp", ".csv");
             TaskManager taskManager = FileBackedTaskManager.loadFromFile(temp);
-            assertInstanceOf(TaskManager.class, taskManager, "Не возвращает к работе экземпляр класса TaskManager");
+            assertInstanceOf(TaskManager.class, taskManager, "Не возвращает к работе экземпляр класса managers.TaskManager");
         } catch (IOException exception) {
             System.out.println("Произошла ошибка" + exception.getMessage());
         }
@@ -20,6 +24,6 @@ class ManagersTest {
     void shouldReturnInstanceOfHistoryManager() {
         HistoryManager historyManager = new Managers().getDefaultHistory();
 
-        assertInstanceOf(HistoryManager.class, historyManager, "Не возвращает к работе экземпляр класса HistoryManager");
+        assertInstanceOf(HistoryManager.class, historyManager, "Не возвращает к работе экземпляр класса managers.HistoryManager");
     }
 }

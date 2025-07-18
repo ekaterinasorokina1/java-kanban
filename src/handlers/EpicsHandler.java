@@ -1,5 +1,6 @@
+package handlers;
+
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -7,24 +8,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
+
+import managers.TaskManager;
+import tasks.Epic;
+import tasks.Subtask;
 
 public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    TaskManager taskManager;
-    Gson gson;
+    private TaskManager taskManager;
+    private Gson gson;
 
-    public EpicsHandler(TaskManager taskManager) {
+    public EpicsHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        this.gson = gson;
     }
 
     @Override
